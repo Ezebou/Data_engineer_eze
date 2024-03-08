@@ -2,24 +2,32 @@ from datetime import timedelta,datetime
 from pathlib import Path
 from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
+from airflow.operators.bash import BashOperator
 
-import requests
-import json
-import pandas as pd
-import psycopg2
-from psycopg2.extras import execute_values
 
-dag_path = os.getcwd()
 default_args = {
-    'start_date': datetime(2024,2, 27),
-    'retries': 1,
-    'retry_delay': timedelta(minutes=3)
+    'owner': 'Ezebou',
+    'retries': 5,
+    'retry_delay': timedelta(minutes=2)
 }
 
-ingestion_dag = DAG(
-    dag_id='ingestion_data',
+dag = DAG(
+    dag_id='dag_Bash_Python_Operators',
     default_args=default_args,
-    description='lineas mas usadas de colectivos',
-     schedule_interval=timedelta(days=1),
-    catchup=False
+    description='Dag para consumir api de linea de colectivos',
+    start_date=datetime(2024, 3, 8 ),
+    schedule_interval='@daily'
 )
+
+task1 = BashOperator(
+task_id='Hola_task_1',
+    bash_command='empieza'
+)
+
+task2 = PythonOperator(
+    task_id='cargando_datos',
+    python_callable=conectando_a_redshift,
+    dag=ingestion_dag,
+)
+
+task1 << task2
