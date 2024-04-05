@@ -15,4 +15,4 @@ Dockerfile	X
 
 docker-compose.yaml	Apache Airflow
 
-entrega 1 y 2 y desafio 3 estan nulos, no se me dejo borrar las filas
+entrega 1 y 2 y desafio 3 estan nulos, no se me dejo borrar las filas, el contendio en main py y dag.py, respectivamente
